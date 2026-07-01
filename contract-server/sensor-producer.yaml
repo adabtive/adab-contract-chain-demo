@@ -1,0 +1,56 @@
+display_name: "Sensor Producer"
+outgoing_base_url: "http://aggregator:8000"
+contracts_dir: "/contracts"
+port: 8891
+
+endpoints:
+  air-quality:
+    type: generate
+    contract: sensor_reading.json
+    refinements:
+      sensor_id:
+        const: sensor-air-01
+      measurements:
+        one_of_filter:
+          measurement_type: air_quality
+      measurements.co2_ppm:
+        minimum: 800
+        maximum: 1500
+      measurements.pm25_ugm3:
+        minimum: 5
+        maximum: 80
+    destination:
+      path: /ingest
+
+  climate:
+    type: generate
+    contract: sensor_reading.json
+    refinements:
+      sensor_id:
+        const: sensor-climate-01
+      measurements:
+        one_of_filter:
+          measurement_type: climate
+      measurements.temperature_c:
+        minimum: 15
+        maximum: 40
+      measurements.humidity_pct:
+        minimum: 30
+        maximum: 85
+    destination:
+      path: /ingest
+
+  noise:
+    type: generate
+    contract: sensor_reading.json
+    refinements:
+      sensor_id:
+        const: sensor-noise-01
+      measurements:
+        one_of_filter:
+          measurement_type: noise
+      measurements.db_spl:
+        minimum: 55
+        maximum: 95
+    destination:
+      path: /ingest

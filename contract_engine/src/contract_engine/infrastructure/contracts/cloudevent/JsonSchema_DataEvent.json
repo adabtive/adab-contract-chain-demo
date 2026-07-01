@@ -1,0 +1,48 @@
+{
+  "$id": "JsonSchema_DataEvent.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    { "$ref": "JsonSchema_CloudEvent.json" },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "nl.kropman.insiteview.cloudevent.values.v1",
+          "$comment": "CHANGED: was '...data.v1' -> PDF specificeert '...values.v1'."
+        },
+        "datacontenttype": {
+          "const": "application/json",
+          "$comment": "ADDED: expliciet gezet; PDF geeft aan dat data JSON is."
+        },
+        "data": {
+          "type": "array",
+          "$comment": "CHANGED: PDF eist array van meetobjecten.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "string",
+                "format": "date-time",
+                "$comment": "Timestamp van de meting; kan verschillen van CloudEvent 'time'."
+              },
+              "key": {
+                "type": "string",
+                "$comment": "Unieke sleutel per adres."
+              },
+              "props": {
+                "type": "object",
+                "$comment": "Object met aangeklikte eigenschappen (bijv. 'Value', 'calc', 'battery/full' etc.).",
+                "additionalProperties": {
+                  "type": ["boolean", "string", "integer", "number"]
+                }
+              }
+            },
+            "required": ["time", "key", "props"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["data"]
+    }
+  ]
+}

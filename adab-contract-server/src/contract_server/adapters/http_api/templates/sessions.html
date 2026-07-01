@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Sessions — Contract Server{% endblock %}
+{% block content %}
+<h1>Sessions</h1>
+
+<section>
+  <h2>Active sessions</h2>
+  {% if sessions %}
+  <table>
+    <thead>
+      <tr>
+        <th>Endpoint</th>
+        <th>Interval</th>
+        <th>Period</th>
+        <th>Jitter</th>
+        <th>Started</th>
+        <th>State</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sessions %}
+      <tr>
+        <td><a href="/ui/endpoints/{{ s.endpoint_name }}">{{ s.endpoint_name }}</a></td>
+        <td>{{ s.interval_ms }}ms</td>
+        <td>{{ s.period or "—" }}</td>
+        <td>{{ s.jitter_ms }}ms</td>
+        <td>{{ s.started_at.strftime("%H:%M:%S") }}</td>
+        <td><span class="badge badge-state-{{ s.state }}">{{ s.state }}</span></td>
+        <td>
+          <button hx-delete="/ui/sessions/{{ s.id }}">Stop</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No active sessions.</p>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Start session</h2>
+  <form hx-post="/ui/sessions/start" hx-target="#session-form-feedback">
+    <label>
+      Endpoint
+      <select name="endpoint" required>
+        {% for name in generate_endpoint_names %}
+        <option value="{{ name }}">{{ name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      Interval (ms)
+      <input type="number" name="interval_ms" min="1" required>
+    </label>
+    <label>
+      Period (ISO 8601)
+      <input type="text" name="period" placeholder="e.g. PT1H">
+    </label>
+    <label>
+      Jitter (ms)
+      <input type="number" name="jitter_ms" min="0" value="0">
+    </label>
+    <button type="submit">Start</button>
+  </form>
+  <div id="session-form-feedback"></div>
+</section>
+{% endblock %}

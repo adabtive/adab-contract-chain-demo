@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Mapping Schema",
+  "type": "object",
+
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "modelType": { "type": "string" },
+        "masterVersion": { "type": "string" },
+        "referentieCatalogusVersion": { "type": "string" },
+        "generatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "project": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$",
+          "$comment": "Altijd vier cijfers, bv. 2145 of 7864."
+        },
+        "naam": { "type": "string" },
+
+        "locatie": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "groepen": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "groepId": {
+                "type": "string",
+                "pattern": "^[0-9]{4}_[a-z0-9_]+[0-9]?$",
+                "$comment": "<project>_<groep> (groep met optionele numerieke suffix)"
+              },
+              "naam": { "type": "string" },
+              "type": { "type": "string" },
+
+              "objecten": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "objectId": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}_[a-z0-9_]+[0-9]?_[a-z0-9_]+[0-9]?$",
+                      "$comment": "<project>_<groep>_<object>"
+                    },
+                    "naam": { "type": "string" },
+                    "type": { "type": "string" },
+                    "tag": { "type": ["string", "null"] },
+
+                    "componenten": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "componentId": {
+                            "type": "string",
+                            "pattern": "^[0-9]{4}_[a-z0-9_]+[0-9]?_[a-z0-9_]+[0-9]?_[a-z0-9_]+[0-9]?$",
+                            "$comment": "<project>_<groep>_<object>_<component>"
+                          },
+                          "naam": { "type": "string" },
+                          "tag": { "type": ["string", "null"] },
+
+                          "meetwaarden": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "meetwaardeId": {
+                                  "type": "string",
+                                  "pattern": "^[0-9]{4}_[a-z0-9_]+[0-9]?_[a-z0-9_]+[0-9]?_[a-z0-9_]+[0-9]?_[a-z0-9_]+[0-9]?$",
+                                  "$comment": "<project>_<groep>_<object>_<component>_<meetwaarde>"
+                                },
+                                "type": { "type": "string" },
+                                "unit": { "type": ["string", "null"] },
+                                "tag": { "type": ["string", "null"] },
+                                "frequentie": {
+                                  "type": "number",
+                                  "$comment": "Float toegestaan (bijv. 6, 6.0, 0.5)."
+                                },
+                                "insiteKey": { "type": "string" }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

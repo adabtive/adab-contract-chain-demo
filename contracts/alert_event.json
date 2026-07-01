@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "alert_event.json",
+  "type": "object",
+  "properties": {
+    "sensor_id":    { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+    "triggered_at": { "type": "string", "format": "date-time" },
+    "severity": {
+      "type": "string",
+      "enum": ["info", "warning", "critical"]
+    },
+    "measurement_type": {
+      "type": "string",
+      "enum": ["air_quality", "climate", "noise"]
+    },
+    "metric":     { "type": "string" },
+    "value":      { "type": "number" },
+    "threshold":  { "type": "number" }
+  },
+  "required": ["sensor_id", "triggered_at", "severity", "measurement_type", "metric", "value", "threshold"],
+  "additionalProperties": false
+}

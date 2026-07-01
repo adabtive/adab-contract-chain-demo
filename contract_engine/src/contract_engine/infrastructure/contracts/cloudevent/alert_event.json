@@ -1,0 +1,58 @@
+{
+  "$id": "alerts_event.json",
+
+  "allOf": [
+    { "$ref": "cloudevent_base.json" },
+
+    {
+      "type": "object",
+
+      "properties": {
+        "type": {
+          "const": "nl.kropman.insiteview.cloudevent.alerts.v1"
+        },
+
+        "data": {
+          "type": "array",
+
+          "items": {
+            "type": "object",
+
+            "required": ["parent", "id", "time", "message"],
+
+            "properties": {
+              "parent": {
+                "type": "string"
+              },
+
+              "id": {
+                "type": "string"
+              },
+
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              },
+
+              "message": {
+                "type": "string"
+              },
+
+              "extra": {
+                "type": "object",
+
+                "additionalProperties": {
+                  "type": ["boolean", "string", "integer", "number"]
+                }
+              }
+            },
+
+            "additionalProperties": false
+          }
+        }
+      },
+
+      "required": ["data"]
+    }
+  ]
+}

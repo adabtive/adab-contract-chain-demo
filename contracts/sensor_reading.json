@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sensor_reading.json",
+  "type": "object",
+  "properties": {
+    "sensor_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "measurements": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "measurement_type": { "type": "string", "enum": ["air_quality"] },
+            "co2_ppm":          { "type": "integer", "minimum": 0,   "maximum": 10000 },
+            "pm25_ugm3":        { "type": "number",  "minimum": 0,   "maximum": 500   },
+            "voc_ppb":          { "type": "integer", "minimum": 0,   "maximum": 2000  }
+          },
+          "required": ["measurement_type", "co2_ppm", "pm25_ugm3", "voc_ppb"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "measurement_type": { "type": "string", "enum": ["climate"] },
+            "temperature_c":    { "type": "number",  "minimum": -40, "maximum": 60    },
+            "humidity_pct":     { "type": "number",  "minimum": 0,   "maximum": 100   },
+            "pressure_hpa":     { "type": "number",  "minimum": 870, "maximum": 1085  }
+          },
+          "required": ["measurement_type", "temperature_c", "humidity_pct", "pressure_hpa"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "measurement_type":  { "type": "string",  "enum": ["noise"] },
+            "db_spl":            { "type": "number",  "minimum": 0,  "maximum": 140   },
+            "peak_frequency_hz": { "type": "integer", "minimum": 20, "maximum": 20000 }
+          },
+          "required": ["measurement_type", "db_spl", "peak_frequency_hz"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": ["sensor_id", "timestamp", "measurements"],
+  "additionalProperties": false
+}

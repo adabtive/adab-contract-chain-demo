@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Overview — Contract Server{% endblock %}
+{% block content %}
+<h1>Overview</h1>
+
+<section>
+  <h2>Endpoints</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Contract</th>
+        <th>Destination</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for name, ep in config.endpoints.items() %}
+      <tr>
+        <td><a href="/ui/endpoints/{{ name }}">{{ name }}</a></td>
+        <td><span class="badge badge-{{ ep.type }}">{{ ep.type }}</span></td>
+        <td><a href="/ui/contracts/{{ ep.contract }}">{{ ep.contract }}</a></td>
+        <td>{% if ep.destination %}{{ ep.destination.method }} {{ (ep.destination.base_url or config.outgoing_base_url).rstrip('/') }}{{ ep.destination.path }}{% else %}—{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Contracts</h2>
+  <ul class="contract-list">
+    {% set contract_names = config.endpoints.values() | map(attribute='contract') | select | unique | sort %}
+    {% for name in contract_names %}
+    <li><a href="/ui/contracts/{{ name }}">{{ name }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Live feed</h2>
+  <div hx-ext="sse" sse-connect="/ui/events/all">
+    <div id="history-feed" sse-swap="history_event" hx-swap="afterbegin">
+      {% for event in events %}
+      {% include "partials/history_event.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

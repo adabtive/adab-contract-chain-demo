@@ -1,0 +1,5 @@
+{% if ok %}
+<span class="badge badge-ok">sent → {{ status_code }}</span>
+{% else %}
+<span class="badge badge-err">{% if status_code %}error {{ status_code }}{% else %}{{ error }}{% endif %}</span>
+{% endif %}

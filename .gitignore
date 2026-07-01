@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.venv/
+venv/
+.direnv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Robot Framework outputs
+results/
+log.html
+report.html
+output.xml
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

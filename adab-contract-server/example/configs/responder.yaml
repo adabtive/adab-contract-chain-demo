@@ -1,0 +1,10 @@
+display_name: "EnergyPod Responder"
+outgoing_base_url: "http://localhost:8877"
+contracts_dir: /contracts
+
+endpoints:
+  session:
+    type: respond
+    request_contract: charging_session.json
+    contract: session_ack.json
+    status_code: 201

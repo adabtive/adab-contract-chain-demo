@@ -1,0 +1,32 @@
+{
+  "allOf": [
+    { "$ref": "cloudevent_base.json" },
+
+    {
+      "type": "object",
+
+      "properties": {
+        "type": {
+          "const": "nl.kropman.insiteview.cloudevent.data.v1"
+        },
+
+        "data": {
+          "type": "object",
+
+          "required": ["address", "value"],
+
+          "properties": {
+            "address": { "type": "string" },
+            "value": { "type": "number" },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      },
+
+      "required": ["data"]
+    }
+  ]
+}

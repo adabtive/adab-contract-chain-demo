@@ -1,0 +1,10 @@
+display_name: "Alert Validator (checks alert_event output)"
+outgoing_base_url: "http://localhost"
+contracts_dir: "/contracts"
+port: 8893
+
+endpoints:
+  notify:
+    type: validate
+    method: POST
+    contract: alert_event.json

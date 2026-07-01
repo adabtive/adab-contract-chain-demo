@@ -1,0 +1,84 @@
+[project]
+name = "contract-engine"
+version = "0.1.0"
+description = "Contract-driven data generation and validation engine"
+requires-python = ">=3.13"
+authors = [{ name = "EteC / Adabtive" }]
+readme = "README.md"
+license = { text = "Proprietary" }
+
+dependencies = [
+    "pydantic>=2.6",
+    "jsonschema[format]>=4.20",
+    "exrex>=0.12.0",
+    "requests>=2.32.5",
+    "aiohttp>=3.13",
+    "paho-mqtt>=2.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "mypy",
+    "types-requests>=2.32"
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+fix = true
+exclude = ["venv", "build", "dist", "__pycache__"]
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",        # no docstrings enforcement (internal)
+    "ANN",      # mypy handles typing
+    "C90",      # complexity
+    "N",        # naming conventions
+    "PL",       # pylint rules
+    "COM812",
+    "ISC001",
+    "E501",
+    "TRY301",
+    "TRY400",
+    "FIX002",
+    "TRY003",
+    "EM102",
+    "EM101"
+]
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "S105", "S106", "PLR2004", "SLF001", "S311"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unused_configs = true
+warn_unused_ignores = false
+ignore_missing_imports = true
+exclude = ["venv", "build", "dist", "__pycache__"]
+
+disallow_untyped_defs = true    # Require function annotations
+disallow_incomplete_defs = true # Prevent partially typed functions
+strict_optional = true          # Handle `None` explicitly
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+log_cli = false
+

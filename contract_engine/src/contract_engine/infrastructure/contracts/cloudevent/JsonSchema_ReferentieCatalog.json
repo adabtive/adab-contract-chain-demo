@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReferentieCatalogus Schema",
+  "type": "object",
+
+  "properties": {
+    "modelType": { "type": "string" },
+    "version": { "type": "string" },
+
+    "meta": {
+      "type": "object",
+      "properties": {
+        "owner": { "type": "string" },
+        "created": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+
+    "GroepTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id":        { "type": "string" },
+          "label":     { "type": "string" },
+          "Beschrijving": { "type": "string" },
+          "attributes": {
+            "type": "array",
+            "items": { "type": "object" }
+          }
+        }
+      }
+    },
+
+    "ObjectTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id":        { "type": "string" },
+          "label":     { "type": "string" },
+          "Beschrijving": { "type": "string" },
+          "attributes": {
+            "type": "array",
+            "items": { "type": "object" }
+          }
+        }
+      }
+    },
+
+    "ComponentTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id":        { "type": "string" },
+          "label":     { "type": "string" },
+          "Beschrijving": { "type": "string" },
+          "attributes": {
+            "type": "array",
+            "items": { "type": "object" }
+          }
+        }
+      }
+    },
+
+    "MeasurementTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id":        { "type": "string" },
+          "label":     { "type": "string" },
+          "Beschrijving": { "type": "string" },
+
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "unit":    { "type": ["string", "null"] },
+                "name":    { "type": ["string", "null"] },
+                "type":    { "type": ["string", "null"] },
+                "values":  { 
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "default": { "type": ["number", "string", "null"] },
+                "description": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "recommendedBindings": {
+      "type": "object",
+
+      "properties": {
+        "_note": { "type": "string" },
+
+        "Groep_to_Object": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "groepType":  { "type": "string" },
+              "objectTypes": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+
+        "Object_to_Component": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "objectType": { "type": "string" },
+              "components": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+
+        "Component_to_Measurement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "componentType": { "type": "string" },
+              "measureTypes": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

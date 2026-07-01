@@ -1,0 +1,52 @@
+{
+  "$id": "JsonSchema_CloudEvent.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["specversion", "type", "source", "id"],
+  "properties": {
+    "specversion": {
+      "type": "string",
+      "const": "1.0",
+      "$comment": "CloudEvents v1.0 – conform PDF specificatie."
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+\\.[a-z0-9-]+(\\.[vV][0-9]+)?$",
+      "$comment": "CHANGED: verduidelijkt patroon voor reversed DNS type strings zoals 'nl.kropman.insiteview.cloudevent.values.v1'."
+    },
+    "source": {
+      "type": "string",
+      "$comment": "URI-achtige bron; voorbeeld in PDF: '/kropman/insiteview/server1'."
+    },
+    "id": {
+      "type": "string",
+      "$comment": "Unieke event ID; PDF adviseert UUIDv4."
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time",
+      "$comment": "Optioneel CloudEvents 'time' volgens RFC3339."
+    },
+    "subject": {
+      "type": "string",
+      "$comment": "Optioneel; voor extra routering/filtering."
+    },
+    "datacontenttype": {
+      "type": "string",
+      "$comment": "Optioneel; indien weggelaten, is de aanname 'application/json'."
+    },
+    "data": {
+      "$comment": "ADDED: Nodig omdat values/info/alerts een payload hebben. 'alive' gebruikt geen data.",
+      "oneOf": [
+        { "type": "object" },
+        { "type": "array" },
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "integer" },
+        { "type": "boolean" },
+        { "type": "null" }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

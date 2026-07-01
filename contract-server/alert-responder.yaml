@@ -1,0 +1,11 @@
+display_name: "Alert Responder (mocks alert engine)"
+outgoing_base_url: "http://localhost"
+contracts_dir: "/contracts"
+port: 8892
+
+endpoints:
+  evaluate:
+    type: respond
+    method: POST
+    request_contract: aggregated_window.json
+    contract: window_ack.json

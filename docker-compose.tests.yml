@@ -1,0 +1,20 @@
+services:
+
+  tests:
+    container_name: chain-tests
+    build:
+      context: .
+      dockerfile: integration-tests/Dockerfile
+    environment:
+      - AGGREGATOR_URL=http://aggregator:8000
+      - CONTRACTS_DIR=/workspace/contracts
+    volumes:
+      - ./results:/workspace/results
+    command: ["robot", "--outputdir", "/workspace/results", "integration-tests/"]
+    networks:
+      - chain
+
+networks:
+  chain:
+    name: chain
+    external: true

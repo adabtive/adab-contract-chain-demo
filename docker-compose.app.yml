@@ -1,0 +1,28 @@
+services:
+
+  aggregator:
+    container_name: chain-aggregator
+    build:
+      context: services/aggregator
+    environment:
+      # - ALERT_ENGINE_URL=http://alert-responder:8892
+      - ALERT_ENGINE_URL=http://alert-engine:8001
+    ports:
+      - "8000:8000"
+    networks:
+      - chain
+
+  alert-engine:
+    container_name: chain-alert-engine
+    build:
+      context: services/alert_engine
+    environment:
+      - ALERT_SINK_URL=http://alert-validator:8893
+    ports:
+      - "8001:8001"
+    networks:
+      - chain
+
+networks:
+  chain:
+    name: chain

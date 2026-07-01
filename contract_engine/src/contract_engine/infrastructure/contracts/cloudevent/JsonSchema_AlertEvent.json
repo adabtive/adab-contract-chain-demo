@@ -1,0 +1,43 @@
+{
+  "$id": "JsonSchema_AlertEvent.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    { "$ref": "JsonSchema_CloudEvent.json" },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "nl.kropman.insiteview.cloudevent.alerts.v1",
+          "$comment": "Conform PDF: alerts-event type."
+        },
+        "datacontenttype": {
+          "const": "application/json",
+          "$comment": "ADDED: expliciet gemaakt."
+        },
+        "data": {
+          "type": "array",
+          "$comment": "Array van melding-objecten.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "parent": { "type": "string", "$comment": "Parent-sleutel." },
+              "id": { "type": "string", "$comment": "Unieke melding-ID." },
+              "time": { "type": "string", "format": "date-time", "$comment": "Timestamp van melding." },
+              "message": { "type": "string", "$comment": "Tekstuele melding." },
+              "extra": {
+                "type": "object",
+                "$comment": "Vrije extra velden; types boolean/string/integer/number toegestaan.",
+                "additionalProperties": {
+                  "type": ["boolean", "string", "integer", "number"]
+                }
+              }
+            },
+            "required": ["parent", "id", "time", "message"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["data"]
+    }
+  ]
+}

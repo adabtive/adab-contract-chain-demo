@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ config.display_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.min.js"></script>
+  <script src="https://unpkg.com/htmx-ext-sse@2.2.2/sse.js"></script>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="/ui/">{{ config.display_name }}</a>
+    <a href="/ui/">Overview</a>
+    <details class="nav-dropdown">
+      <summary>Endpoints</summary>
+      <div class="nav-dropdown-content">
+        {% for name in config.endpoints %}
+        <a href="/ui/endpoints/{{ name }}">{{ name }}</a>
+        {% endfor %}
+      </div>
+    </details>
+    <details class="nav-dropdown">
+      <summary>Contracts</summary>
+      <div class="nav-dropdown-content">
+        {% set contract_names = config.endpoints.values() | map(attribute='contract') | select | unique | sort %}
+        {% for name in contract_names %}
+        <a href="/ui/contracts/{{ name }}">{{ name }}</a>
+        {% endfor %}
+      </div>
+    </details>
+    <a href="/ui/sessions">Sessions</a>
+  </nav>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

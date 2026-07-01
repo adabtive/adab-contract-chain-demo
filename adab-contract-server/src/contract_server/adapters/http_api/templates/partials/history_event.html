@@ -1,0 +1,50 @@
+{% if event.kind == "validate" %}
+  {% set status_class = "event-ok" if event.valid else "event-err" %}
+{% elif event.kind == "generate" %}
+  {% set status_class = "event-ok" if event.status_code < 400 else "event-err" %}
+{% else %}
+  {% set status_class = "event-ok" if (event.request_valid != false and event.status_code < 400) else "event-err" %}
+{% endif %}
+<div class="event {{ status_class }}">
+  <div class="event-header">
+    <span class="event-time">{{ event.timestamp.strftime("%H:%M:%S") }}</span>
+    <a class="event-endpoint" href="/ui/endpoints/{{ event.endpoint_name }}">{{ event.endpoint_name }}</a>
+    {% if event.kind == "validate" %}
+      <span class="badge {{ 'badge-ok' if event.valid else 'badge-err' }}">
+        {{ "valid" if event.valid else "invalid" }}
+      </span>
+      {% if not event.valid %}
+      <ul class="event-errors">
+        {% for e in event.errors %}<li>{{ e.location }}: {{ e.message }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+    {% elif event.kind == "generate" %}
+      <span class="badge {{ 'badge-ok' if event.status_code < 400 else 'badge-err' }}">{{ event.status_code }}</span>
+    {% else %}
+      <span class="badge badge-respond">respond</span>
+      <span class="badge {{ 'badge-ok' if event.status_code < 400 else 'badge-err' }}">{{ event.status_code }}</span>
+      {% if event.request_valid == false %}
+      <ul class="event-errors">
+        {% for e in event.errors %}<li>{{ e.location }}: {{ e.message }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+    {% endif %}
+  </div>
+  <div class="event-body">
+    {% if event.kind == "validate" %}
+      <details><summary>received</summary><pre>{{ event.payload | tojson(indent=2) }}</pre></details>
+    {% elif event.kind == "generate" %}
+      <details><summary>sent</summary><pre>{{ event.payload | tojson(indent=2) }}</pre></details>
+      {% if event.response_body is not none %}
+      <details><summary>response</summary><pre>{{ event.response_body | tojson(indent=2) }}</pre></details>
+      {% endif %}
+    {% else %}
+      {% if event.request_body is not none %}
+      <details><summary>request</summary><pre>{{ event.request_body | tojson(indent=2) }}</pre></details>
+      {% endif %}
+      {% if event.response_body is not none %}
+      <details><summary>response</summary><pre>{{ event.response_body | tojson(indent=2) }}</pre></details>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

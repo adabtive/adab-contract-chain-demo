@@ -1,0 +1,36 @@
+services:
+  producer:
+    container_name: example-producer
+    build:
+      context: ..
+      dockerfile: adab-contract-server/Dockerfile
+    volumes:
+      - ./example/configs/producer.yaml:/config.yaml:ro
+      - ./example/contracts:/contracts:ro
+    command: ["/config.yaml"]
+    ports:
+      - "8877:8877"
+
+  validator:
+    container_name: example-validator
+    build:
+      context: ..
+      dockerfile: adab-contract-server/Dockerfile
+    volumes:
+      - ./example/configs/validator.yaml:/config.yaml:ro
+      - ./example/contracts:/contracts:ro
+    command: ["/config.yaml"]
+    ports:
+      - "8878:8877"
+
+  responder:
+    container_name: example-responder
+    build:
+      context: ..
+      dockerfile: adab-contract-server/Dockerfile
+    volumes:
+      - ./example/configs/responder.yaml:/config.yaml:ro
+      - ./example/contracts:/contracts:ro
+    command: ["/config.yaml"]
+    ports:
+      - "8879:8877"

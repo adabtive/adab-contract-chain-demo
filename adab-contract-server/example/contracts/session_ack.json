@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SessionAck",
+  "type": "object",
+  "required": ["accepted", "message"],
+  "additionalProperties": false,
+  "properties": {
+    "accepted": { "type": "boolean", "enum": [true] },
+    "message": { "type": "string", "enum": ["session received"] }
+  }
+}

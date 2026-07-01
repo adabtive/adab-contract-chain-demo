@@ -1,0 +1,77 @@
+{
+  "$id": "JsonSchema_InfoEvent.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "allOf": [
+    { "$ref": "JsonSchema_CloudEvent.json" },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "nl.kropman.insiteview.cloudevent.info.v1",
+          "$comment": "Conform PDF: info-event."
+        },
+        "datacontenttype": {
+          "const": "application/json",
+          "$comment": "ADDED: expliciet gemaakt."
+        },
+        "data": {
+          "type": "object",
+          "$comment": "Object met 'addresses' en 'parents'.",
+          "properties": {
+            "addresses": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": { "type": "string", "$comment": "Adres-sleutel." },
+                  "parent": { "type": "string", "$comment": "Parent-sleutel." },
+                  "description": { "type": "string", "$comment": "Omschrijving/naam." },
+                  "path": { "type": "string", "$comment": "Bron-pad; vaak lang en met '/'." },
+                  "interval": { "type": "integer", "$comment": "Sec.; verzend-interval." },
+                  "extra": {
+                    "type": "object",
+                    "$comment": "Vrije extra metadata per adres.",
+                    "additionalProperties": {
+                      "type": ["boolean", "string", "integer", "number"]
+                    }
+                  },
+                  "enabled": { "type": "boolean", "$comment": "Actief ja/nee." },
+                  "props": {
+                    "type": "object",
+                    "$comment": "Eigenschappen die periodiek verstuurd worden; value = object met 'unit' (PDF).",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "unit": { "type": "string" }
+                      },
+                      "required": ["unit"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": ["key", "parent", "description", "path", "interval", "enabled", "props"],
+                "additionalProperties": false
+              }
+            },
+            "parents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": { "type": "string", "$comment": "Parent-sleutel (PDF)." },
+                  "description": { "type": "string", "$comment": "Naam/omschrijving (PDF)." },
+                  "enabled": { "type": "boolean", "$comment": "Actief ja/nee (PDF)." }
+                },
+                "required": ["key", "description", "enabled"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["addresses", "parents"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["data"]
+    }
+  ]
+}

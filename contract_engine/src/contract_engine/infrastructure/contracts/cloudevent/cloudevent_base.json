@@ -1,0 +1,41 @@
+{
+  "$id": "cloudevent_base.json",
+  "type": "object",
+
+  "required": ["specversion", "type", "source", "id"],
+
+  "properties": {
+    "specversion": {
+      "type": "string",
+      "const": "1.0"
+    },
+
+    "type": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+..+"
+    },
+
+    "source": {
+      "type": "string"
+    },
+
+    "id": {
+      "type": "string"
+    },
+
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "subject": {
+      "type": "string"
+    },
+
+    "datacontenttype": {
+      "type": "string"
+    }
+  },
+
+  "additionalProperties": false
+}

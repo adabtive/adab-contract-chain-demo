@@ -1,0 +1,11 @@
+display_name: "EnergyPod Validator"
+outgoing_base_url: "http://localhost:8877"
+contracts_dir: /contracts
+
+endpoints:
+  inbound:
+    type: validate
+    contract: charging_session.json
+    refinements:
+      status:
+        const: boter

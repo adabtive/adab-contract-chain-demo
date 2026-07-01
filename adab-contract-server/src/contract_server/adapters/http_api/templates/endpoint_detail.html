@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ name }} — Contract Server{% endblock %}
+{% block content %}
+<h1>
+  <span class="badge badge-{{ endpoint.type }}">{{ endpoint.type }}</span>
+  {{ name }}
+</h1>
+
+<section>
+  <h2>Config</h2>
+  <table class="config-table">
+    <tr>
+      <th>Contract</th>
+      <td><a href="/ui/contracts/{{ endpoint.contract }}">{{ endpoint.contract }}</a></td>
+    </tr>
+    {% if endpoint.destination %}
+    <tr>
+      <th>Destination</th>
+      <td><code>{{ endpoint.destination }}</code></td>
+    </tr>
+    {% endif %}
+    {% if endpoint.overrides %}
+    <tr>
+      <th>Overrides</th>
+      <td><pre>{{ endpoint.overrides | tojson(indent=2) }}</pre></td>
+    </tr>
+    {% endif %}
+    {% if endpoint.refinements %}
+    <tr>
+      <th>Refinements</th>
+      <td><pre>{{ endpoint.refinements | tojson(indent=2) }}</pre></td>
+    </tr>
+    {% endif %}
+  </table>
+</section>
+
+{% if endpoint.type == "generate" %}
+<section>
+  <h2>Actions</h2>
+  <div class="actions-row">
+    <button hx-post="/ui/emit/{{ name }}" hx-target="#emit-result" hx-swap="innerHTML">
+      Send now
+    </button>
+    <span id="emit-result"></span>
+  </div>
+  <details class="start-session-form">
+    <summary>Start session</summary>
+    <form hx-post="/ui/sessions/start">
+      <input type="hidden" name="endpoint" value="{{ name }}">
+      <label>
+        Interval (ms)
+        <input type="number" name="interval_ms" min="1" required>
+      </label>
+      <label>
+        Period
+        <input type="text" name="period" placeholder="optional label">
+      </label>
+      <label>
+        Jitter (ms)
+        <input type="number" name="jitter_ms" min="0" value="0">
+      </label>
+      <button type="submit">Start</button>
+    </form>
+  </details>
+</section>
+{% endif %}
+
+<section>
+  <h2>History</h2>
+  <div hx-ext="sse" sse-connect="/ui/events/{{ name }}">
+    <div id="history-feed" sse-swap="history_event" hx-swap="afterbegin">
+      {% for event in events %}
+      {% include "partials/history_event.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
