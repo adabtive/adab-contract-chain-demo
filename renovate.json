@@ -1,0 +1,7 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>adabtive/adab-renovate-config//python.json#main",
+    "local>adabtive/adab-renovate-config//docker.json#main"
+  ]
+}
